@@ -13,6 +13,13 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
+  dimension: age_decades {
+    type: tier
+    tiers: [0,10,20,30,40,50,60,70,80,90,100]
+    style: integer
+    sql: ${TABLE}.age ;;
+  }
+
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -48,6 +55,16 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
+  dimension: full_name {
+    type: string
+    sql: concat(${TABLE}.first_name,concat(' ',${TABLE}.last_name)) ;;
+  }
+
+  dimension: full_name_length {
+    type: string
+    sql: length(${full_name}) ;;
+  }
+
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
@@ -76,5 +93,10 @@ view: users {
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, orders.count]
+  }
+
+  measure: age_average {
+    type: average
+    sql: ${TABLE}.age ;;
   }
 }
