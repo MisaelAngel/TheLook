@@ -96,6 +96,17 @@ view: users {
     sql: ${TABLE}.state ;;
   }
 
+  dimension: state_link {
+    type: string
+    sql: ${TABLE}.state ;;
+    map_layer_name: us_states
+    html: {% if _explore._name == "order_items" %}
+    <a href="/explore/mtrmisathelook/order_items?fields=order_items.count*&f[users.state]= {{ value }}">{{ value }}</a>
+  {% else %}
+    <a href="/explore/mtrmisathelook/users?fields=users.country*&f[users.state]={{ value }}">{{ value }}</a>
+  {% endif %} ;;
+  }
+
   dimension: traffic_source {
     type: string
     sql: ${TABLE}.traffic_source ;;
