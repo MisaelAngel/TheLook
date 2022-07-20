@@ -2,6 +2,18 @@ view: users {
   sql_table_name: public.users ;;
   drill_fields: [id]
 
+  filter: select_traffic_source {
+    type: string
+    suggest_explore: order_items
+    suggest_dimension: users.traffic_source
+  }
+
+  dimension: hidden_traffic_source_filter {
+    hidden: yes
+    type: yesno
+    sql: {% condition select_traffic_source %} ${traffic_source} {% endcondition %} ;;
+  }
+
   dimension: id {
     primary_key: yes
     type: number
@@ -101,10 +113,10 @@ view: users {
     sql: ${TABLE}.state ;;
     map_layer_name: us_states
     html: {% if _explore._name == "order_items" %}
-    <a href="/explore/mtrmisathelook/order_items?fields=order_items.count*&f[users.state]= {{ value }}">{{ value }}</a>
-  {% else %}
-    <a href="/explore/mtrmisathelook/users?fields=users.country*&f[users.state]={{ value }}">{{ value }}</a>
-  {% endif %} ;;
+          <a href="/explore/mtrmisathelook/order_items?fields=order_items.count*&f[users.state]= {{ value }}">{{ value }}</a>
+        {% else %}
+          <a href="/explore/mtrmisathelook/users?fields=users.country*&f[users.state]={{ value }}">{{ value }}</a>
+        {% endif %} ;;
   }
 
   dimension: traffic_source {
@@ -115,6 +127,12 @@ view: users {
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;
+  }
+
+  measure: dynamic_count {
+    type: count_distinct
+    sql: ${id} ;;
+    filters: [hidden_traffic_source_filter: "Yes"]
   }
 
   measure: count {

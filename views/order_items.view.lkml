@@ -20,6 +20,11 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension: user_id {
+    type: number
+    sql: ${TABLE}.user_id ;;
+  }
+
   dimension_group: returned {
     type: time
     timeframes: [
@@ -35,7 +40,7 @@ view: order_items {
   }
 
   dimension: sale_price {
-    hidden: yes
+    #hidden: yes
     type: number
     sql: ${TABLE}.sale_price ;;
     value_format_name: usd
