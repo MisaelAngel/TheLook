@@ -41,6 +41,35 @@ view: order_items {
     value_format_name: usd
   }
 
+  parameter: select_timeframe {
+    type: unquoted
+    default_value: "returned_month"
+    allowed_value: {
+      value: "returned_week"
+      label: "Week"
+    }
+    allowed_value: {
+      value: "returned_month"
+      label: "Month"
+    }
+    allowed_value: {
+      value: "returned_date"
+      label: "Date"
+    }
+  }
+
+  dimension: dynamic_timeframe {
+    label_from_parameter: select_timeframe
+    type: string
+    sql: {% if select_timeframe._parameter_value == 'returned_date' %}
+          ${returned_date}
+          {% elsif select_timeframe._parameter_value == 'returned_week' %}
+          ${returned_week}
+          {% else %}
+          ${returned_month}
+          {% endif %} ;;
+  }
+
   measure: total_revenue {
     type: sum
     sql: ${TABLE}.sale_price ;;
