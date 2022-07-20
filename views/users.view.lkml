@@ -41,6 +41,12 @@ view: users {
     sql: ${TABLE}.country ;;
   }
 
+  dimension: order_history_button {
+    label: "Order History"
+    sql: ${TABLE}.id ;;
+    html: <a href="/explore/mtrmisathelook/order_items?fields=order_items.id, users.first_name, users.last_name, users.id, order_items.count, order_items.total_revenue&f[users.id]={{ value }}"><button>Order History</button></a> ;;
+  }
+
   dimension_group: created {
     type: time
     timeframes: [
