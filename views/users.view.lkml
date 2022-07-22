@@ -1,4 +1,6 @@
+include: location.view
 view: users {
+  extends: [location]
   sql_table_name: public.users ;;
   drill_fields: [id]
 
@@ -32,11 +34,6 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
-  dimension: city {
-    type: string
-    sql: ${TABLE}.city ;;
-  }
-
   dimension: city_link {
     type: string
     sql: ${TABLE}.city ;;
@@ -47,16 +44,10 @@ view: users {
     }
   }
 
-  dimension: country {
-    type: string
-    map_layer_name: countries
-    sql: ${TABLE}.country ;;
-  }
-
   dimension: order_history_button {
     label: "Order History"
     sql: ${TABLE}.id ;;
-    html: <a href="/explore/mtrmisathelook/order_items?fields=order_items.id, users.first_name, users.last_name, users.id, order_items.count, order_items.total_revenue&f[users.id]={{ value }}"><button>Order History</button></a> ;;
+    html: <a href="/explore/mtrmisathelook/order_items?fields=order_items.id, users.first_name, users.last_name, users.id, order_items.count, order_items.total_revenue&f[users.id]={{ value }}"><button style="background-color:green;">Order History</button></a> ;;
   }
 
   dimension_group: created {
@@ -103,12 +94,6 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
-  dimension: state {
-    type: string
-    sql: ${TABLE}.state ;;
-    map_layer_name: us_states
-  }
-
   dimension: state_link {
     type: string
     sql: ${TABLE}.state ;;
@@ -123,11 +108,6 @@ view: users {
   dimension: traffic_source {
     type: string
     sql: ${TABLE}.traffic_source ;;
-  }
-
-  dimension: zip {
-    type: zipcode
-    sql: ${TABLE}.zip ;;
   }
 
   measure: dynamic_count {
